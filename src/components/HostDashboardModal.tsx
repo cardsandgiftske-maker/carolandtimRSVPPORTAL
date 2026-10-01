@@ -54,7 +54,7 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
       setIsAuthenticated(true);
       setAuthError('');
     } else {
-      setAuthError('Incorrect passcode. Hint: Use "carol2026" to log in.');
+      setAuthError('Incorrect passcode. Hint: Use "2026" to log in.');
     }
   };
 
