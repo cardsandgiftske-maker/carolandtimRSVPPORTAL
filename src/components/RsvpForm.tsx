@@ -95,13 +95,14 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
       attending: attending as 'yes' | 'no',
       guestCount: attending === 'yes' ? (hasPlusOne ? 2 : 1) : 0,
       hasPlusOne: attending === 'yes' ? hasPlusOne : false,
-      plusOne:
-        attending === 'yes' && hasPlusOne
-          ? {
+      ...(attending === 'yes' && hasPlusOne && plusOneFirstName.trim() && plusOneLastName.trim()
+        ? {
+            plusOne: {
               firstName: plusOneFirstName.trim(),
               lastName: plusOneLastName.trim(),
-            }
-          : undefined,
+            },
+          }
+        : {}),
       noteToCouple: noteToCouple.trim(),
       submittedAt: isEditingExisting
         ? (rsvps.find((r) => r.id === currentEditId)?.submittedAt || new Date().toISOString())
@@ -111,6 +112,21 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
 
     onSaveRsvp(newRsvp);
     setSubmittedRsvp(newRsvp);
+  };
+
+  const handleStartEdit = (rsvpToEdit: RSVPResponse) => {
+    setSubmittedRsvp(null);
+    setIsEditingExisting(true);
+    setCurrentEditId(rsvpToEdit.id);
+    setFirstName(rsvpToEdit.primaryGuest.firstName);
+    setLastName(rsvpToEdit.primaryGuest.lastName);
+    setPhone(rsvpToEdit.primaryGuest.phone);
+    setAttending(rsvpToEdit.attending);
+    setHasPlusOne(rsvpToEdit.hasPlusOne);
+    setPlusOneFirstName(rsvpToEdit.plusOne?.firstName || '');
+    setPlusOneLastName(rsvpToEdit.plusOne?.lastName || '');
+    setNoteToCouple(rsvpToEdit.noteToCouple || '');
+    setFormErrors([]);
   };
 
   const handleResetForAnother = () => {
@@ -252,11 +268,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
             <div className="pt-4 flex items-center justify-center gap-4 text-xs">
               <button
                 type="button"
-                onClick={() => {
-                  setSubmittedRsvp(null);
-                  setIsEditingExisting(true);
-                  setCurrentEditId(submittedRsvp.id);
-                }}
+                onClick={() => handleStartEdit(submittedRsvp)}
                 className="text-[#5B6E60] font-medium hover:underline cursor-pointer flex items-center gap-1"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
