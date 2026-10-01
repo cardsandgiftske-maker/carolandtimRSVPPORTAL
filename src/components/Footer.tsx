@@ -11,7 +11,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenHostDashboard }) => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
         
         <div className="space-y-1">
-          <h3 className="font-serif text-3xl sm:text-4xl text-[#FAF9F5] font-normal tracking-wide">
+          <h3 className="font-serif text-3xl sm:text-4xl text-[#FAF9F5] font-bold tracking-wide">
             Carol weds Tim
           </h3>
           <p className="text-sm font-sans tracking-wider text-[#A2C7B0]">
