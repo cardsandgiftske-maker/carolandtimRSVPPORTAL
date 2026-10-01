@@ -54,7 +54,7 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
       setIsAuthenticated(true);
       setAuthError('');
     } else {
-      setAuthError('Incorrect passcode. Hint: Use "2026" to log in.');
+      setAuthError('Incorrect passcode. Hint: Use "carol2026" to log in.');
     }
   };
 
@@ -138,7 +138,7 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
         <div className="bg-[#1E3024] text-[#FAF9F5] px-6 py-4 flex items-center justify-between border-b border-[#294232]">
           <div className="flex items-center gap-2.5">
             <ShieldCheck className="w-5 h-5 text-[#97C5A5]" />
-            <h3 className="font-serif text-xl sm:text-2xl font-normal tracking-wide">
+            <h3 className="font-serif text-xl sm:text-2xl font-bold tracking-wide">
               Host & Wedding Organizer Portal
             </h3>
           </div>
@@ -159,7 +159,7 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
             </div>
 
             <div className="space-y-1">
-              <h4 className="font-serif text-2xl text-[#242E25]">Organizer Passcode Required</h4>
+              <h4 className="font-serif text-2xl font-bold text-[#242E25]">Organizer Passcode Required</h4>
               <p className="text-xs text-[#59705F]">
                 Please enter the couple passcode to view the guest list, phone numbers, and export rosters.
               </p>
@@ -177,11 +177,11 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
                 />
               </div>
 
-              {authError && <p className="text-xs text-rose-700">{authError}</p>}
+              {authError && <p className="text-xs text-rose-700 font-medium">{authError}</p>}
 
               <button
                 type="submit"
-                className="w-full py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider text-white bg-[#4E8765] hover:bg-[#3E7252] transition-colors cursor-pointer shadow-xs"
+                className="w-full py-2.5 rounded-full text-xs font-bold uppercase tracking-wider text-white bg-[#4E8765] hover:bg-[#3E7252] transition-colors cursor-pointer shadow-xs"
               >
                 Access Dashboard
               </button>
@@ -192,7 +192,7 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
                   setPasscode('carol2026');
                   setIsAuthenticated(true);
                 }}
-                className="text-[11px] text-[#4E8765] font-medium hover:underline block mx-auto cursor-pointer"
+                className="text-[11px] text-[#4E8765] font-bold hover:underline block mx-auto cursor-pointer"
               >
                 Quick Preview as Couple (Click here)
               </button>
@@ -204,48 +204,48 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
             {/* Top Metric Cards */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
               <div className="bg-white border border-[#DDD7CD] p-4 rounded-2xl shadow-2xs">
-                <span className="text-[11px] uppercase tracking-wider text-[#698671] font-semibold block">
+                <span className="text-[11px] uppercase tracking-wider text-[#698671] font-bold block">
                   Total Responses
                 </span>
-                <span className="font-serif text-3xl font-medium text-[#242E25] tabular-nums">
+                <span className="font-serif text-3xl font-bold text-[#242E25] tabular-nums">
                   {rsvps.length}
                 </span>
-                <span className="text-[11px] text-[#5A7061] block mt-0.5">Invitations accounted</span>
+                <span className="text-[11px] text-[#5A7061] block mt-0.5 font-medium">Invitations accounted</span>
               </div>
 
               <div className="bg-white border border-[#DDD7CD] p-4 rounded-2xl shadow-2xs">
-                <span className="text-[11px] uppercase tracking-wider text-[#3D7853] font-semibold block">
+                <span className="text-[11px] uppercase tracking-wider text-[#3D7853] font-bold block">
                   Attending Guests
                 </span>
-                <span className="font-serif text-3xl font-medium text-[#3D7853] tabular-nums">
+                <span className="font-serif text-3xl font-bold text-[#3D7853] tabular-nums">
                   {totalHeadcount}
                 </span>
-                <span className="text-[11px] text-[#5A7061] block mt-0.5">
+                <span className="text-[11px] text-[#5A7061] block mt-0.5 font-medium">
                   ({attendingRsvps.length} responses)
                 </span>
               </div>
 
               <div className="bg-white border border-[#DDD7CD] p-4 rounded-2xl shadow-2xs">
-                <span className="text-[11px] uppercase tracking-wider text-[#8A7869] font-semibold block">
+                <span className="text-[11px] uppercase tracking-wider text-[#8A7869] font-bold block">
                   Declined
                 </span>
-                <span className="font-serif text-3xl font-medium text-[#8A7869] tabular-nums">
+                <span className="font-serif text-3xl font-bold text-[#8A7869] tabular-nums">
                   {declinedRsvps.length}
                 </span>
-                <span className="text-[11px] text-[#637265] block mt-0.5">Regretfully declined</span>
+                <span className="text-[11px] text-[#637265] block mt-0.5 font-medium">Regretfully declined</span>
               </div>
 
               <div className="bg-[#FAFDFB] border border-[#BDDDC7] p-4 rounded-2xl shadow-2xs flex flex-col justify-between">
                 <div>
-                  <span className="text-[11px] uppercase tracking-wider text-[#3D7853] font-semibold block">
+                  <span className="text-[11px] uppercase tracking-wider text-[#3D7853] font-bold block">
                     Export Data
                   </span>
-                  <span className="text-xs text-[#526054]">Roster for planning</span>
+                  <span className="text-xs text-[#526054] font-medium">Roster for planning</span>
                 </div>
                 <button
                   type="button"
                   onClick={() => exportRSVPsToCSV(rsvps)}
-                  className="mt-2 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-[#4E8765] hover:bg-[#3E7252] transition-colors cursor-pointer shadow-2xs"
+                  className="mt-2 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-[#4E8765] hover:bg-[#3E7252] transition-colors cursor-pointer shadow-2xs"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Download CSV</span>
@@ -257,8 +257,8 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
-                  <h4 className="font-serif text-xl text-[#242E25]">Guest RSVP Roster</h4>
-                  <span className="text-xs bg-[#E8F3EC] text-[#2A5D3B] px-2.5 py-0.5 rounded-full font-semibold border border-[#BDDDC7]">
+                  <h4 className="font-serif text-xl font-bold text-[#242E25]">Guest RSVP Roster</h4>
+                  <span className="text-xs bg-[#E8F3EC] text-[#2A5D3B] px-2.5 py-0.5 rounded-full font-bold border border-[#BDDDC7]">
                     {filteredRsvps.length} {filteredRsvps.length === 1 ? 'record' : 'records'}
                   </span>
                 </div>
@@ -267,7 +267,7 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
                   <button
                     type="button"
                     onClick={() => setShowAddModal(true)}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-[#4E8765] hover:bg-[#3E7252] transition-colors cursor-pointer shadow-2xs"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-[#4E8765] hover:bg-[#3E7252] transition-colors cursor-pointer shadow-2xs"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Add Guest Manually</span>
@@ -288,13 +288,13 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
                   />
                 </div>
 
-                <div className="flex items-center gap-1.5 bg-[#E6ECE8] p-1 rounded-xl text-xs font-medium">
+                <div className="flex items-center gap-1.5 bg-[#E6ECE8] p-1 rounded-xl text-xs font-bold">
                   <button
                     type="button"
                     onClick={() => setStatusFilter('all')}
                     className={`px-3 py-1 rounded-lg transition-colors cursor-pointer ${
                       statusFilter === 'all'
-                        ? 'bg-white text-[#242E25] shadow-2xs font-semibold'
+                        ? 'bg-white text-[#242E25] shadow-2xs font-bold'
                         : 'text-[#5A7363] hover:text-[#242E25]'
                     }`}
                   >
@@ -305,7 +305,7 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
                     onClick={() => setStatusFilter('attending')}
                     className={`px-3 py-1 rounded-lg transition-colors cursor-pointer ${
                       statusFilter === 'attending'
-                        ? 'bg-white text-[#3D7853] shadow-2xs font-semibold'
+                        ? 'bg-white text-[#3D7853] shadow-2xs font-bold'
                         : 'text-[#5A7363] hover:text-[#242E25]'
                     }`}
                   >
@@ -316,7 +316,7 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
                     onClick={() => setStatusFilter('declined')}
                     className={`px-3 py-1 rounded-lg transition-colors cursor-pointer ${
                       statusFilter === 'declined'
-                        ? 'bg-white text-[#8A7869] shadow-2xs font-semibold'
+                        ? 'bg-white text-[#8A7869] shadow-2xs font-bold'
                         : 'text-[#5A7363] hover:text-[#242E25]'
                     }`}
                   >
@@ -329,7 +329,7 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
               <div className="bg-white border border-[#DDD7CD] rounded-2xl overflow-hidden shadow-2xs">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-[#F8F6F0] text-[#4F6456] font-semibold border-b border-[#EAE5DC] uppercase tracking-wider">
+                    <thead className="bg-[#F8F6F0] text-[#4F6456] font-bold border-b border-[#EAE5DC] uppercase tracking-wider">
                       <tr>
                         <th className="py-3 px-4">Code</th>
                         <th className="py-3 px-4">Guest Name</th>
@@ -350,11 +350,11 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
                       ) : (
                         filteredRsvps.map((rsvp) => (
                           <tr key={rsvp.id} className="hover:bg-[#FAF9F5] transition-colors">
-                            <td className="py-3 px-4 font-mono font-medium text-[#242E25]">
+                            <td className="py-3 px-4 font-mono font-bold text-[#242E25]">
                               {rsvp.confirmationCode}
                             </td>
                             <td className="py-3 px-4">
-                              <div className="font-semibold text-[#242E25]">
+                              <div className="font-bold text-[#242E25]">
                                 {rsvp.primaryGuest.firstName} {rsvp.primaryGuest.lastName}
                               </div>
                             </td>
@@ -363,18 +363,18 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
                             </td>
                             <td className="py-3 px-4">
                               {rsvp.attending === 'yes' ? (
-                                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#2A653C] bg-[#E5F3E9] px-2.5 py-0.5 rounded-full border border-[#BBDBC4]">
+                                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#2A653C] bg-[#E5F3E9] px-2.5 py-0.5 rounded-full border border-[#BBDBC4]">
                                   <CheckCircle2 className="w-3 h-3" />
                                   Attending
                                 </span>
                               ) : (
-                                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#7D6B5D] bg-[#F2EDE8] px-2.5 py-0.5 rounded-full">
+                                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#7D6B5D] bg-[#F2EDE8] px-2.5 py-0.5 rounded-full">
                                   <XCircle className="w-3 h-3" />
                                   Declined
                                 </span>
                               )}
                             </td>
-                            <td className="py-3 px-4 font-semibold text-[#242E25] tabular-nums">
+                            <td className="py-3 px-4 font-bold text-[#242E25] tabular-nums">
                               {rsvp.attending === 'yes' ? `${rsvp.guestCount} ${rsvp.guestCount === 1 ? 'Guest' : 'Guests'}` : '0'}
                             </td>
                             <td className="py-3 px-4 text-[#4E5C50] max-w-xs truncate">
@@ -415,21 +415,21 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
         <div className="fixed inset-0 z-60 bg-black/50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b pb-2">
-              <h4 className="font-serif text-xl text-[#242E25]">Manually Add Guest RSVP</h4>
+              <h4 className="font-serif text-xl font-bold text-[#242E25]">Manually Add Guest RSVP</h4>
               <button onClick={() => setShowAddModal(false)} className="text-stone-400 hover:text-stone-700 cursor-pointer">
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {manualAddError && (
-              <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-800">
+              <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-800 font-medium">
                 {manualAddError}
               </div>
             )}
 
             <form onSubmit={handleCreateManualGuest} className="space-y-3 text-xs">
               <div>
-                <label className="block text-stone-600 mb-1">First Name *</label>
+                <label className="block text-stone-700 font-bold mb-1">First Name *</label>
                 <input
                   type="text"
                   required
@@ -439,7 +439,7 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
                 />
               </div>
               <div>
-                <label className="block text-stone-600 mb-1">Last Name *</label>
+                <label className="block text-stone-700 font-bold mb-1">Last Name *</label>
                 <input
                   type="text"
                   required
@@ -449,7 +449,7 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
                 />
               </div>
               <div>
-                <label className="block text-stone-600 mb-1">Phone Number * (Must be unique)</label>
+                <label className="block text-stone-700 font-bold mb-1">Phone Number * (Must be unique)</label>
                 <input
                   type="tel"
                   required
@@ -460,13 +460,13 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
                 />
               </div>
               <div>
-                <label className="block text-stone-600 mb-1">Attendance</label>
+                <label className="block text-stone-700 font-bold mb-1">Attendance</label>
                 <div className="flex gap-2">
                   <button
                     type="button"
                     onClick={() => setNewStatus('yes')}
                     className={`flex-1 py-2 rounded-lg cursor-pointer transition-all ${
-                      newStatus === 'yes' ? 'bg-[#4E8765] text-white shadow-xs' : 'bg-stone-100 text-stone-700'
+                      newStatus === 'yes' ? 'bg-[#4E8765] text-white shadow-xs font-bold' : 'bg-stone-100 text-stone-700 font-medium'
                     }`}
                   >
                     Attending
@@ -475,7 +475,7 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
                     type="button"
                     onClick={() => setNewStatus('no')}
                     className={`flex-1 py-2 rounded-lg cursor-pointer transition-all ${
-                      newStatus === 'no' ? 'bg-[#8A796D] text-white' : 'bg-stone-100 text-stone-700'
+                      newStatus === 'no' ? 'bg-[#8A796D] text-white font-bold' : 'bg-stone-100 text-stone-700 font-medium'
                     }`}
                   >
                     Declined
@@ -484,13 +484,13 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
               </div>
               {newStatus === 'yes' && (
                 <div>
-                  <label className="block text-stone-600 mb-1">Number of Guests</label>
+                  <label className="block text-stone-700 font-bold mb-1">Number of Guests</label>
                   <div className="flex gap-2">
                     <button
                       type="button"
                       onClick={() => setNewGuestCount(1)}
                       className={`flex-1 py-2 rounded-lg cursor-pointer transition-all ${
-                        newGuestCount === 1 ? 'bg-[#4E8765] text-white shadow-xs' : 'bg-stone-100 text-stone-700'
+                        newGuestCount === 1 ? 'bg-[#4E8765] text-white shadow-xs font-bold' : 'bg-stone-100 text-stone-700 font-medium'
                       }`}
                     >
                       1- guest
@@ -499,7 +499,7 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
                       type="button"
                       onClick={() => setNewGuestCount(2)}
                       className={`flex-1 py-2 rounded-lg cursor-pointer transition-all ${
-                        newGuestCount === 2 ? 'bg-[#4E8765] text-white shadow-xs' : 'bg-stone-100 text-stone-700'
+                        newGuestCount === 2 ? 'bg-[#4E8765] text-white shadow-xs font-bold' : 'bg-stone-100 text-stone-700 font-medium'
                       }`}
                     >
                       2-Guests
@@ -511,13 +511,13 @@ export const HostDashboardModal: React.FC<HostDashboardModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="flex-1 py-2 rounded-xl bg-stone-100 text-stone-600 cursor-pointer"
+                  className="flex-1 py-2 rounded-xl bg-stone-100 text-stone-600 cursor-pointer font-bold"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2 rounded-xl bg-[#4E8765] hover:bg-[#3E7252] text-white font-medium cursor-pointer shadow-xs"
+                  className="flex-1 py-2 rounded-xl bg-[#4E8765] hover:bg-[#3E7252] text-white font-bold cursor-pointer shadow-xs"
                 >
                   Save Guest
                 </button>
