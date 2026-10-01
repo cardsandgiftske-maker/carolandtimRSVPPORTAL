@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Health check collection for connection testing
+    match /test/{testId} {
+      allow read: if true;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidRSVP(data) {
+      return data.keys().hasAll(['confirmationCode', 'primaryGuest', 'attending', 'guestCount', 'hasPlusOne'])
+        && data.confirmationCode is string && data.confirmationCode.size() <= 64
+        && data.attending in ['yes', 'no']
+        && data.guestCount is number
+        && data.guestCount >= 0 && data.guestCount <= 10
+        && data.hasPlusOne is bool
+        && data.primaryGuest is map
+        && data.primaryGuest.keys().hasAll(['firstName', 'lastName', 'phone'])
+        && data.primaryGuest.firstName is string && data.primaryGuest.firstName.size() <= 100
+        && data.primaryGuest.lastName is string && data.primaryGuest.lastName.size() <= 100
+        && data.primaryGuest.phone is string && data.primaryGuest.phone.size() <= 50;
+    }
+
+    match /rsvps/{rsvpId} {
+      allow get: if isValidId(rsvpId);
+      allow list: if true;
+      allow create: if isValidId(rsvpId) && isValidRSVP(request.resource.data);
+      allow update: if isValidId(rsvpId) && isValidRSVP(request.resource.data);
+      allow delete: if isValidId(rsvpId);
+    }
+  }
+}

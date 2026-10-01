@@ -1,0 +1,68 @@
+{
+  "entities": {
+    "RSVP": {
+      "title": "RSVP",
+      "description": "Guest RSVP submission for Carol & Tim wedding celebration",
+      "type": "object",
+      "properties": {
+        "confirmationCode": {
+          "type": "string",
+          "maxLength": 64,
+          "description": "Unique RSVP confirmation code"
+        },
+        "primaryGuest": {
+          "type": "object",
+          "description": "Primary attendee details",
+          "properties": {
+            "firstName": { "type": "string", "maxLength": 100 },
+            "lastName": { "type": "string", "maxLength": 100 },
+            "phone": { "type": "string", "maxLength": 50 }
+          },
+          "required": ["firstName", "lastName", "phone"]
+        },
+        "attending": {
+          "type": "string",
+          "enum": ["yes", "no"],
+          "description": "Attendance decision"
+        },
+        "guestCount": {
+          "type": "number",
+          "description": "Total headcount"
+        },
+        "hasPlusOne": {
+          "type": "boolean",
+          "description": "Whether the guest is bringing a plus-one"
+        },
+        "plusOne": {
+          "type": "object",
+          "description": "Optional plus-one guest details"
+        },
+        "noteToCouple": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "submittedAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "confirmationCode",
+        "primaryGuest",
+        "attending",
+        "guestCount",
+        "hasPlusOne"
+      ]
+    }
+  },
+  "firestore": {
+    "/rsvps/{rsvpId}": {
+      "schema": {
+        "$ref": "#/entities/RSVP"
+      },
+      "description": "Collection of wedding RSVP records"
+    }
+  }
+}
