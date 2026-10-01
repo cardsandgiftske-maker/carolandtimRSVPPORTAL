@@ -102,7 +102,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
               lastName: plusOneLastName.trim(),
             }
           : undefined,
-      noteToCouple: noteToCouple.trim() || undefined,
+      noteToCouple: noteToCouple.trim(),
       submittedAt: isEditingExisting
         ? (rsvps.find((r) => r.id === currentEditId)?.submittedAt || new Date().toISOString())
         : new Date().toISOString(),
