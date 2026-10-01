@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+    font-weight: 700;
+  }
+
+  body {
+    font-weight: 700;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-editorial {
+    font-family: var(--font-serif);
+    font-weight: 800;
+  }
+
+  p, span, label, input, button, textarea, select {
+    font-weight: 700;
+  }
+}
+
+.font-serif {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.font-sans {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
