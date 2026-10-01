@@ -6,7 +6,7 @@ export const Header: React.FC = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <span className="font-serif text-2xl sm:text-3xl tracking-wide text-[#233527] font-medium block">
+            <span className="font-serif text-2xl sm:text-3xl tracking-wide text-[#233527] font-bold block">
               Carol & Tim
             </span>
             <span className="text-[11px] tracking-[0.2em] uppercase text-[#4E8765] font-sans font-semibold">
