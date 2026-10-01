@@ -24,7 +24,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
   const [phone, setPhone] = useState('');
   const [attending, setAttending] = useState<'yes' | 'no'>('yes');
 
-  // Number of guests state: false = 1- guest, true = 2-Guests
+  // Number of guests state: false = 1 guest, true = 2 guests
   const [hasPlusOne, setHasPlusOne] = useState(false);
 
   // Note to couple
@@ -76,6 +76,8 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
       ? rsvps.find((r) => r.id === currentEditId)?.confirmationCode || `CT-${Math.floor(1000 + Math.random() * 9000)}`
       : `CT-${Math.floor(1000 + Math.random() * 9000)}`;
 
+    const trimmedNote = noteToCouple.trim();
+
     const newRsvp: RSVPResponse = {
       id: currentEditId || `rsvp-${Date.now()}`,
       confirmationCode,
@@ -87,7 +89,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
       attending: attending as 'yes' | 'no',
       guestCount: attending === 'yes' ? (hasPlusOne ? 2 : 1) : 0,
       hasPlusOne: attending === 'yes' ? hasPlusOne : false,
-      noteToCouple: noteToCouple.trim() || undefined,
+      ...(trimmedNote ? { noteToCouple: trimmedNote } : {}),
       submittedAt: isEditingExisting
         ? (rsvps.find((r) => r.id === currentEditId)?.submittedAt || new Date().toISOString())
         : new Date().toISOString(),
@@ -96,6 +98,19 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
 
     onSaveRsvp(newRsvp);
     setSubmittedRsvp(newRsvp);
+  };
+
+  const handleStartEdit = (rsvpToEdit: RSVPResponse) => {
+    setSubmittedRsvp(null);
+    setIsEditingExisting(true);
+    setCurrentEditId(rsvpToEdit.id);
+    setFirstName(rsvpToEdit.primaryGuest.firstName);
+    setLastName(rsvpToEdit.primaryGuest.lastName);
+    setPhone(rsvpToEdit.primaryGuest.phone);
+    setAttending(rsvpToEdit.attending);
+    setHasPlusOne(rsvpToEdit.guestCount === 2);
+    setNoteToCouple(rsvpToEdit.noteToCouple || '');
+    setFormErrors([]);
   };
 
   const handleResetForAnother = () => {
@@ -227,16 +242,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
             <div className="pt-4 flex items-center justify-center gap-4 text-xs">
               <button
                 type="button"
-                onClick={() => {
-                  setSubmittedRsvp(null);
-                  setIsEditingExisting(true);
-                  setCurrentEditId(submittedRsvp.id);
-                  if (submittedRsvp.guestCount === 2) {
-                    setHasPlusOne(true);
-                  } else {
-                    setHasPlusOne(false);
-                  }
-                }}
+                onClick={() => handleStartEdit(submittedRsvp)}
                 className="text-[#4E8765] font-semibold hover:underline cursor-pointer flex items-center gap-1"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
@@ -441,7 +447,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
                               : 'bg-[#EEF5F0] text-[#3B684C] hover:bg-[#E2EDE5]'
                           }`}
                         >
-                          1- guest
+                          1 guest
                         </button>
                         <button
                           type="button"
@@ -452,7 +458,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
                               : 'bg-[#EEF5F0] text-[#3B684C] hover:bg-[#E2EDE5]'
                           }`}
                         >
-                          2-Guests
+                          2 guests
                         </button>
                       </div>
                     </div>
