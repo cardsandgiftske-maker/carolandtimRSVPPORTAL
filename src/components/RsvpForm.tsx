@@ -24,7 +24,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
   const [phone, setPhone] = useState('');
   const [attending, setAttending] = useState<'yes' | 'no'>('yes');
 
-  // Number of guests state: false = 1 guest, true = 2 guests
+  // Number of guests state: false = 1- guest, true = 2-Guests
   const [hasPlusOne, setHasPlusOne] = useState(false);
 
   // Note to couple
@@ -76,8 +76,6 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
       ? rsvps.find((r) => r.id === currentEditId)?.confirmationCode || `CT-${Math.floor(1000 + Math.random() * 9000)}`
       : `CT-${Math.floor(1000 + Math.random() * 9000)}`;
 
-    const trimmedNote = noteToCouple.trim();
-
     const newRsvp: RSVPResponse = {
       id: currentEditId || `rsvp-${Date.now()}`,
       confirmationCode,
@@ -89,7 +87,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
       attending: attending as 'yes' | 'no',
       guestCount: attending === 'yes' ? (hasPlusOne ? 2 : 1) : 0,
       hasPlusOne: attending === 'yes' ? hasPlusOne : false,
-      ...(trimmedNote ? { noteToCouple: trimmedNote } : {}),
+      noteToCouple: noteToCouple.trim() || undefined,
       submittedAt: isEditingExisting
         ? (rsvps.find((r) => r.id === currentEditId)?.submittedAt || new Date().toISOString())
         : new Date().toISOString(),
@@ -98,19 +96,6 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
 
     onSaveRsvp(newRsvp);
     setSubmittedRsvp(newRsvp);
-  };
-
-  const handleStartEdit = (rsvpToEdit: RSVPResponse) => {
-    setSubmittedRsvp(null);
-    setIsEditingExisting(true);
-    setCurrentEditId(rsvpToEdit.id);
-    setFirstName(rsvpToEdit.primaryGuest.firstName);
-    setLastName(rsvpToEdit.primaryGuest.lastName);
-    setPhone(rsvpToEdit.primaryGuest.phone);
-    setAttending(rsvpToEdit.attending);
-    setHasPlusOne(rsvpToEdit.guestCount === 2);
-    setNoteToCouple(rsvpToEdit.noteToCouple || '');
-    setFormErrors([]);
   };
 
   const handleResetForAnother = () => {
@@ -132,14 +117,14 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
         
         {/* Section Header */}
         <div className="text-center space-y-2.5 mb-8">
-          <p className="text-xs uppercase tracking-[0.28em] text-[#4E8765] font-semibold">
+          <p className="text-xs uppercase tracking-[0.28em] text-[#4E8765] font-bold">
             Wedding Celebration · October 24, 2026
           </p>
-          <h1 className="font-serif text-4xl sm:text-5xl font-normal text-[#242E25]">
+          <h1 className="font-serif text-4xl sm:text-5xl font-bold text-[#242E25]">
             RSVP Portal
           </h1>
           <p className="text-xs sm:text-sm text-[#55695B] max-w-md mx-auto">
-            Please respond on or before <strong className="text-[#1D3222] font-semibold">October 15, 2026</strong>.
+            Please respond on or before <strong className="text-[#1D3222] font-bold">October 15, 2026</strong>.
           </p>
         </div>
 
@@ -151,10 +136,10 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
             </div>
 
             <div className="space-y-2">
-              <p className="text-xs uppercase tracking-[0.25em] text-[#4E8765] font-semibold">
+              <p className="text-xs uppercase tracking-[0.25em] text-[#4E8765] font-bold">
                 RSVP Received
               </p>
-              <h3 className="font-serif text-3xl sm:text-4xl text-[#232F25]">
+              <h3 className="font-serif text-3xl sm:text-4xl font-bold text-[#232F25]">
                 {submittedRsvp.attending === 'yes'
                   ? `Thank You, ${submittedRsvp.primaryGuest.firstName}!`
                   : `Thank You for Letting Us Know, ${submittedRsvp.primaryGuest.firstName}`}
@@ -169,7 +154,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
             {/* Confirmation details card */}
             <div className="bg-white border border-[#DDD8CE] rounded-2xl p-6 text-left max-w-lg mx-auto space-y-4 shadow-xs">
               <div className="flex items-center justify-between border-b border-[#F0ECE4] pb-3">
-                <span className="text-xs uppercase tracking-wider text-[#52775E] font-semibold">
+                <span className="text-xs uppercase tracking-wider text-[#52775E] font-bold">
                   Confirmation Code
                 </span>
                 <span className="font-mono text-base font-bold text-[#1F3D2A] bg-[#E8F3EC] px-3 py-1 rounded-md">
@@ -179,34 +164,34 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
 
               <div className="grid grid-cols-2 gap-4 text-xs text-[#3E4B40]">
                 <div>
-                  <span className="block text-[#6D8F78] font-medium mb-0.5">Primary Guest</span>
-                  <span className="font-semibold text-[#202B22]">
+                  <span className="block text-[#6D8F78] font-bold mb-0.5">Primary Guest</span>
+                  <span className="font-bold text-[#202B22]">
                     {submittedRsvp.primaryGuest.firstName} {submittedRsvp.primaryGuest.lastName}
                   </span>
                 </div>
                 <div>
-                  <span className="block text-[#6D8F78] font-medium mb-0.5">Phone Number</span>
-                  <span className="font-semibold font-mono text-[#202B22]">
+                  <span className="block text-[#6D8F78] font-bold mb-0.5">Phone Number</span>
+                  <span className="font-bold font-mono text-[#202B22]">
                     {submittedRsvp.primaryGuest.phone}
                   </span>
                 </div>
                 <div>
-                  <span className="block text-[#6D8F78] font-medium mb-0.5">Status</span>
-                  <span className="font-semibold text-[#202B22]">
+                  <span className="block text-[#6D8F78] font-bold mb-0.5">Status</span>
+                  <span className="font-bold text-[#202B22]">
                     {submittedRsvp.attending === 'yes' ? 'Joyfully Attending' : 'Regretfully Declined'}
                   </span>
                 </div>
                 {submittedRsvp.attending === 'yes' && (
                   <div>
-                    <span className="block text-[#6D8F78] font-medium mb-0.5">Total Seats</span>
-                    <span className="text-[#202B22] font-semibold">
+                    <span className="block text-[#6D8F78] font-bold mb-0.5">Total Seats</span>
+                    <span className="text-[#202B22] font-bold">
                       {submittedRsvp.guestCount} {submittedRsvp.guestCount === 1 ? 'Guest' : 'Guests'}
                     </span>
                   </div>
                 )}
                 {submittedRsvp.noteToCouple && (
                   <div className="col-span-2 pt-2 border-t border-[#F2EEE7]">
-                    <span className="block text-[#6D8F78] font-medium mb-0.5">Note to Couple</span>
+                    <span className="block text-[#6D8F78] font-bold mb-0.5">Note to Couple</span>
                     <p className="text-[#202B22] italic text-xs leading-relaxed">
                       "{submittedRsvp.noteToCouple}"
                     </p>
@@ -222,7 +207,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
                   href={getGoogleCalendarUrl()}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider text-[#244A32] bg-[#EAF4ED] hover:bg-[#DEEDE2] transition-colors border border-[#BDDDC7] cursor-pointer shadow-2xs"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider text-[#244A32] bg-[#EAF4ED] hover:bg-[#DEEDE2] transition-colors border border-[#BDDDC7] cursor-pointer shadow-2xs"
                 >
                   <CalendarPlus className="w-4 h-4 text-[#4E8765]" />
                   <span>Add to Google Calendar</span>
@@ -231,7 +216,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
                 <button
                   type="button"
                   onClick={downloadIcsFile}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider text-[#244A32] bg-[#EAF4ED] hover:bg-[#DEEDE2] transition-colors border border-[#BDDDC7] cursor-pointer shadow-2xs"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider text-[#244A32] bg-[#EAF4ED] hover:bg-[#DEEDE2] transition-colors border border-[#BDDDC7] cursor-pointer shadow-2xs"
                 >
                   <Download className="w-4 h-4 text-[#4E8765]" />
                   <span>Download .ICS File</span>
@@ -242,8 +227,17 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
             <div className="pt-4 flex items-center justify-center gap-4 text-xs">
               <button
                 type="button"
-                onClick={() => handleStartEdit(submittedRsvp)}
-                className="text-[#4E8765] font-semibold hover:underline cursor-pointer flex items-center gap-1"
+                onClick={() => {
+                  setSubmittedRsvp(null);
+                  setIsEditingExisting(true);
+                  setCurrentEditId(submittedRsvp.id);
+                  if (submittedRsvp.guestCount === 2) {
+                    setHasPlusOne(true);
+                  } else {
+                    setHasPlusOne(false);
+                  }
+                }}
+                className="text-[#4E8765] font-bold hover:underline cursor-pointer flex items-center gap-1"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
                 <span>Edit This RSVP</span>
@@ -252,7 +246,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
               <button
                 type="button"
                 onClick={handleResetForAnother}
-                className="text-[#4E8765] font-semibold hover:underline cursor-pointer"
+                className="text-[#4E8765] font-bold hover:underline cursor-pointer"
               >
                 Submit Another RSVP
               </button>
@@ -269,13 +263,13 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
               {isEditingExisting && (
                 <div className="p-4 bg-[#EDF6F0] border border-[#BDDDC7] rounded-2xl flex items-center justify-between text-xs text-[#2A4D35]">
                   <div>
-                    <span className="font-semibold block">Editing Existing RSVP</span>
+                    <span className="font-bold block">Editing Existing RSVP</span>
                     <span>Modifying details for confirmation code {rsvps.find((r) => r.id === currentEditId)?.confirmationCode}</span>
                   </div>
                   <button
                     type="button"
                     onClick={handleResetForAnother}
-                    className="text-xs uppercase tracking-wider font-semibold text-[#4E8765] hover:underline"
+                    className="text-xs uppercase tracking-wider font-bold text-[#4E8765] hover:underline cursor-pointer"
                   >
                     Cancel Edit
                   </button>
@@ -285,7 +279,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
               {/* Validation errors banner */}
               {formErrors.length > 0 && (
                 <div className="p-4 bg-rose-50 border border-rose-200 rounded-2xl text-xs text-rose-800 space-y-1">
-                  <div className="flex items-center gap-2 font-semibold">
+                  <div className="flex items-center gap-2 font-bold">
                     <AlertCircle className="w-4 h-4 shrink-0" />
                     <span>Please check the following before submitting:</span>
                   </div>
@@ -300,15 +294,15 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
               {/* Step 1: Guest Identity */}
               <div className="space-y-4">
                 <div className="border-b border-[#EAE5DC] pb-3">
-                  <span className="text-xs uppercase tracking-[0.2em] text-[#4E8765] font-semibold">
+                  <span className="text-xs uppercase tracking-[0.2em] text-[#4E8765] font-bold">
                     Step 1
                   </span>
-                  <h3 className="font-serif text-2xl text-[#242E25]">Guest Information</h3>
+                  <h3 className="font-serif text-2xl font-bold text-[#242E25]">Guest Information</h3>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#475449] mb-1.5">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#475449] mb-1.5">
                       First Name <span className="text-rose-600">*</span>
                     </label>
                     <input
@@ -322,7 +316,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#475449] mb-1.5">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#475449] mb-1.5">
                       Last Name <span className="text-rose-600">*</span>
                     </label>
                     <input
@@ -338,10 +332,10 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
 
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-[#475449]">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#475449]">
                       Phone Number <span className="text-rose-600">*</span>
                     </label>
-                    <span className="text-[11px] text-[#5C7F68]">One RSVP per phone number</span>
+                    <span className="text-[11px] text-[#5C7F68] font-medium">One RSVP per phone number</span>
                   </div>
                   <div className="relative">
                     <Phone className="w-4 h-4 text-[#68987B] absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -360,10 +354,10 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
               {/* Step 2: Attendance Decision */}
               <div className="space-y-4">
                 <div className="border-b border-[#EAE5DC] pb-3">
-                  <span className="text-xs uppercase tracking-[0.2em] text-[#4E8765] font-semibold">
+                  <span className="text-xs uppercase tracking-[0.2em] text-[#4E8765] font-bold">
                     Step 2
                   </span>
-                  <h3 className="font-serif text-2xl text-[#242E25]">Attendance</h3>
+                  <h3 className="font-serif text-2xl font-bold text-[#242E25]">Attendance</h3>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -377,7 +371,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
                     }`}
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <span className="font-serif text-xl font-medium text-[#242E25]">
+                      <span className="font-serif text-xl font-bold text-[#242E25]">
                         Joyfully Accepts
                       </span>
                       <span
@@ -403,7 +397,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
                     }`}
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <span className="font-serif text-xl font-medium text-[#242E25]">
+                      <span className="font-serif text-xl font-bold text-[#242E25]">
                         Regretfully Declines
                       </span>
                       <span
@@ -427,13 +421,13 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
                   <div className="space-y-3">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
-                        <span className="text-xs uppercase tracking-[0.2em] text-[#4E8765] font-semibold block mb-0.5">
+                        <span className="text-xs uppercase tracking-[0.2em] text-[#4E8765] font-bold block mb-0.5">
                           Step 3
                         </span>
-                        <h4 className="font-serif text-2xl text-[#242E25]">
+                        <h4 className="font-serif text-2xl font-bold text-[#242E25]">
                           Number of guests included in your invitation
                         </h4>
-                        <p className="text-xs text-[#4F6856] mt-1.5 font-normal">
+                        <p className="text-xs text-[#4F6856] mt-1.5 font-medium">
                           Please select the number of people named/included on your invitation
                         </p>
                       </div>
@@ -441,24 +435,24 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
                         <button
                           type="button"
                           onClick={() => setHasPlusOne(false)}
-                          className={`px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer ${
+                          className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
                             !hasPlusOne
                               ? 'bg-[#4E8765] text-white shadow-xs'
                               : 'bg-[#EEF5F0] text-[#3B684C] hover:bg-[#E2EDE5]'
                           }`}
                         >
-                          1 guest
+                          1- guest
                         </button>
                         <button
                           type="button"
                           onClick={() => setHasPlusOne(true)}
-                          className={`px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer ${
+                          className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
                             hasPlusOne
                               ? 'bg-[#4E8765] text-white shadow-xs'
                               : 'bg-[#EEF5F0] text-[#3B684C] hover:bg-[#E2EDE5]'
                           }`}
                         >
-                          2 guests
+                          2-Guests
                         </button>
                       </div>
                     </div>
@@ -468,7 +462,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
 
               {/* Note to the Couple */}
               <div className="space-y-2 pt-2 border-t border-[#EAE5DC]">
-                <label className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#475449]">
+                <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#475449]">
                   <Heart className="w-3.5 h-3.5 text-[#4E8765]" />
                   <span>A Warm Wish or Note for Carol & Tim</span>
                 </label>
@@ -485,14 +479,14 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
               <div className="pt-4">
                 <button
                   type="submit"
-                  className="w-full py-4 rounded-full text-sm font-semibold uppercase tracking-wider text-white bg-[#4E8765] hover:bg-[#3F7354] active:scale-[0.99] transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full py-4 rounded-full text-sm font-bold uppercase tracking-wider text-white bg-[#4E8765] hover:bg-[#3F7354] active:scale-[0.99] transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
                 >
                   <span>
                     {isEditingExisting ? 'Update RSVP Details' : 'Confirm RSVP Response'}
                   </span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
-                <p className="text-center text-xs text-[#6B8473] mt-3">
+                <p className="text-center text-xs text-[#6B8473] mt-3 font-medium">
                   Responses must be confirmed by October 15, 2026.
                 </p>
               </div>
