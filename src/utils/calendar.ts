@@ -49,6 +49,7 @@ export function exportRSVPsToCSV(rsvps: RSVPResponse[]) {
     'Primary First Name',
     'Primary Last Name',
     'Phone',
+    'Second Guest Name',
     'Note to Couple',
     'Submission Date',
   ];
@@ -60,6 +61,7 @@ export function exportRSVPsToCSV(rsvps: RSVPResponse[]) {
     `"${r.primaryGuest.firstName}"`,
     `"${r.primaryGuest.lastName}"`,
     `"${r.primaryGuest.phone || ''}"`,
+    `"${r.plusOne ? [r.plusOne.firstName, r.plusOne.lastName].filter(Boolean).join(' ') : ''}"`,
     `"${(r.noteToCouple || '').replace(/"/g, '""')}"`,
     `"${r.submittedAt}"`,
   ]);
