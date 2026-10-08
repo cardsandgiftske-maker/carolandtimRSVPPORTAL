@@ -214,7 +214,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
 
             }
 
-          : undefined,
+          : null as any,
 
       noteToCouple: noteToCouple.trim(),
 
