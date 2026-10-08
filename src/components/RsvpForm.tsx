@@ -216,7 +216,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
 
           : undefined,
 
-      noteToCouple: noteToCouple.trim() || undefined,
+      noteToCouple: noteToCouple.trim(),
 
       submittedAt: isEditingExisting
 
