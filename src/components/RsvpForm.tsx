@@ -89,7 +89,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
     const plusOneFirstName = nameParts[0] || '';
     const plusOneLastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
 
-    const newRsvp: RSVPResponse = {
+    const newRsvp = {
       id: currentEditId || `rsvp-${Date.now()}`,
       confirmationCode,
       primaryGuest: {
@@ -106,13 +106,13 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
               firstName: plusOneFirstName,
               lastName: plusOneLastName,
             }
-          : undefined,
-      noteToCouple: noteToCouple.trim() || undefined,
+          : null, // Set to null instead of undefined for Firestore safety
+      noteToCouple: noteToCouple.trim() || null, // Set to null instead of undefined for Firestore safety
       submittedAt: isEditingExisting
         ? (rsvps.find((r) => r.id === currentEditId)?.submittedAt || new Date().toISOString())
         : new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-    };
+    } as unknown as RSVPResponse;
 
     onSaveRsvp(newRsvp);
     setSubmittedRsvp(newRsvp);
@@ -397,171 +397,4 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
                   <h3 className="font-serif text-2xl font-black text-[#242E25]">Attendance</h3>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <button
-                    type="button"
-                    onClick={() => setAttending('yes')}
-                    className={`p-5 rounded-2xl border-2 text-left transition-all cursor-pointer flex flex-col justify-between ${
-                      attending === 'yes'
-                        ? 'bg-[#EDF7F0] border-[#4E8765] ring-2 ring-[#4E8765]'
-                        : 'bg-white border-[#DDD7CD] hover:border-[#9BC2A7]'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-serif text-xl font-black text-[#242E25]">
-                        Joyfully Accepts
-                      </span>
-                      <span
-                        className={`w-6 h-6 rounded-full flex items-center justify-center transition-all ${
-                          attending === 'yes' ? 'bg-[#4E8765] text-white shadow-xs' : 'border-2 border-[#C9C2B5]'
-                        }`}
-                      >
-                        {attending === 'yes' && <Check className="w-4 h-4 stroke-[3]" />}
-                      </span>
-                    </div>
-                    <p className="text-xs text-[#445D4C] font-extrabold">
-                      I / We will be there to celebrate with you on October 24, 2026.
-                    </p>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setAttending('no')}
-                    className={`p-5 rounded-2xl border-2 text-left transition-all cursor-pointer flex flex-col justify-between ${
-                      attending === 'no'
-                        ? 'bg-[#FAF4ED] border-[#A89484] ring-2 ring-[#A89484]'
-                        : 'bg-white border-[#DDD7CD] hover:border-[#A4B2A8]'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-serif text-xl font-black text-[#242E25]">
-                        Regretfully Declines
-                      </span>
-                      <span
-                        className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                          attending === 'no' ? 'bg-[#8F7463] text-white' : 'border-2 border-[#C9C2B5]'
-                        }`}
-                      >
-                        {attending === 'no' && <Check className="w-4 h-4 stroke-[3]" />}
-                      </span>
-                    </div>
-                    <p className="text-xs text-[#5D6B60] font-extrabold">
-                      I / We will be celebrating with you in spirit from afar.
-                    </p>
-                  </button>
-                </div>
-              </div>
-
-              {/* Step 3: Number of Guests Area */}
-              {attending === 'yes' && (
-                <div className="space-y-6 pt-4 border-t-2 border-[#EAE5DC]">
-                  <div className="space-y-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                      <div>
-                        <span className="text-xs uppercase tracking-[0.2em] text-[#4E8765] font-black block mb-0.5">
-                          Step 3
-                        </span>
-                        <h4 className="font-serif text-2xl font-black text-[#242E25]">
-                          Number of guests included in your invitation
-                        </h4>
-                        <p className="text-xs text-[#415C49] mt-1.5 font-extrabold">
-                          Please select the number of people named/included on your invitation
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2.5 shrink-0">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setHasPlusOne(false);
-                            setSecondGuestName('');
-                          }}
-                          className={`px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all cursor-pointer border-2 ${
-                            !hasPlusOne
-                              ? 'bg-[#4E8765] text-white border-[#4E8765] shadow-xs'
-                              : 'bg-[#EEF5F0] text-[#335E42] border-[#CDE3D5] hover:bg-[#E2EDE5]'
-                          }`}
-                        >
-                          1- guest
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setHasPlusOne(true)}
-                          className={`px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all cursor-pointer border-2 ${
-                            hasPlusOne
-                              ? 'bg-[#4E8765] text-white border-[#4E8765] shadow-xs'
-                              : 'bg-[#EEF5F0] text-[#335E42] border-[#CDE3D5] hover:bg-[#E2EDE5]'
-                          }`}
-                        >
-                          2-Guests
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Place for second guest to write their name */}
-                    {hasPlusOne && (
-                      <div className="p-4 sm:p-5 bg-[#FAFDFB] border-2 border-[#BDDDC7] rounded-2xl space-y-2 mt-3 animate-in fade-in duration-200">
-                        <div className="flex items-center justify-between">
-                          <label className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#2A4D35]">
-                            <UserCheck className="w-4 h-4 text-[#4E8765] stroke-[2.5]" />
-                            <span>Second Guest's Full Name <span className="text-rose-600 font-black">*</span></span>
-                          </label>
-                          <span className="text-[11px] text-[#4E705A] font-extrabold bg-[#E5F3E9] px-2 py-0.5 rounded-full">
-                            Included in Invitation
-                          </span>
-                        </div>
-                        <input
-                          type="text"
-                          required={hasPlusOne}
-                          value={secondGuestName}
-                          onChange={(e) => setSecondGuestName(e.target.value)}
-                          placeholder="e.g. Grace Wambui"
-                          className="w-full px-4 py-3 bg-white border-2 border-[#B4D7BF] rounded-xl text-sm font-black text-[#242E25] focus:outline-none focus:ring-2 focus:ring-[#4E8765]"
-                        />
-                        <p className="text-[11px] text-[#4E705A] font-extrabold">
-                          Please enter the name of the second person named/included on your invitation.
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {/* Note to the Couple */}
-              <div className="space-y-2 pt-2 border-t-2 border-[#EAE5DC]">
-                <label className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#354337]">
-                  <Heart className="w-4 h-4 text-[#4E8765] fill-[#4E8765]/20 stroke-[2.5]" />
-                  <span>A Warm Wish or Note for Carol & Tim</span>
-                </label>
-                <textarea
-                  rows={3}
-                  value={noteToCouple}
-                  onChange={(e) => setNoteToCouple(e.target.value)}
-                  placeholder="Leave a heartfelt message, memory, or marriage advice..."
-                  className="w-full px-4 py-3 bg-white border-2 border-[#D5CEC2] rounded-xl text-sm font-black text-[#242E25] focus:outline-none focus:ring-2 focus:ring-[#4E8765]"
-                />
-              </div>
-
-              {/* Submit Action Button */}
-              <div className="pt-4">
-                <button
-                  type="submit"
-                  className="w-full py-4 rounded-full text-sm font-black uppercase tracking-wider text-white bg-[#4E8765] hover:bg-[#3F7354] active:scale-[0.99] transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
-                >
-                  <span>
-                    {isEditingExisting ? 'Update RSVP Details' : 'Confirm RSVP Response'}
-                  </span>
-                  <ArrowRight className="w-4 h-4 stroke-[3]" />
-                </button>
-                <p className="text-center text-xs text-[#526D59] mt-3 font-extrabold">
-                  Responses must be confirmed by October 15, 2026.
-                </p>
-              </div>
-
-            </form>
-          </div>
-        )}
-
-      </div>
-    </section>
-  );
-};
+                <div className="grid grid-cols-
