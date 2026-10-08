@@ -25,7 +25,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
   const [phone, setPhone] = useState('');
   const [attending, setAttending] = useState<'yes' | 'no'>('yes');
 
-  // Number of guests state: false = 1- guest, true = 2-Guests
+  // Number of guests state: false = 1 Guest, true = 2 Guests
   const [hasPlusOne, setHasPlusOne] = useState(false);
   const [secondGuestName, setSecondGuestName] = useState('');
 
@@ -89,7 +89,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
     const plusOneFirstName = nameParts[0] || '';
     const plusOneLastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
 
-    const newRsvp = {
+    const newRsvp: RSVPResponse = {
       id: currentEditId || `rsvp-${Date.now()}`,
       confirmationCode,
       primaryGuest: {
@@ -97,7 +97,7 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
         lastName: lastName.trim(),
         phone: phone.trim(),
       },
-      attending: attending as 'yes' | 'no',
+      attending,
       guestCount: attending === 'yes' ? (hasPlusOne ? 2 : 1) : 0,
       hasPlusOne: attending === 'yes' ? hasPlusOne : false,
       plusOne:
@@ -106,13 +106,13 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
               firstName: plusOneFirstName,
               lastName: plusOneLastName,
             }
-          : null, // Set to null instead of undefined for Firestore safety
-      noteToCouple: noteToCouple.trim() || null, // Set to null instead of undefined for Firestore safety
+          : null,
+      noteToCouple: noteToCouple.trim() || null,
       submittedAt: isEditingExisting
         ? (rsvps.find((r) => r.id === currentEditId)?.submittedAt || new Date().toISOString())
         : new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-    } as unknown as RSVPResponse;
+    };
 
     onSaveRsvp(newRsvp);
     setSubmittedRsvp(newRsvp);
@@ -260,6 +260,11 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
                   setSubmittedRsvp(null);
                   setIsEditingExisting(true);
                   setCurrentEditId(submittedRsvp.id);
+                  setFirstName(submittedRsvp.primaryGuest.firstName);
+                  setLastName(submittedRsvp.primaryGuest.lastName);
+                  setPhone(submittedRsvp.primaryGuest.phone);
+                  setAttending(submittedRsvp.attending);
+                  setNoteToCouple(submittedRsvp.noteToCouple || '');
                   if (submittedRsvp.guestCount === 2) {
                     setHasPlusOne(true);
                     if (submittedRsvp.plusOne) {
@@ -397,4 +402,132 @@ export const RsvpForm: React.FC<RsvpFormProps> = ({ rsvps, onSaveRsvp }) => {
                   <h3 className="font-serif text-2xl font-black text-[#242E25]">Attendance</h3>
                 </div>
 
-                <div className="grid grid-cols-
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <label
+                    className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                      attending === 'yes'
+                        ? 'border-[#4E8765] bg-[#F2F8F4]'
+                        : 'border-[#D5CEC2] bg-[#FCFBF7] hover:border-[#B5AEA2]'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="attending"
+                      value="yes"
+                      checked={attending === 'yes'}
+                      onChange={() => setAttending('yes')}
+                      className="w-4 h-4 text-[#4E8765] focus:ring-[#4E8765]"
+                    />
+                    <div>
+                      <span className="block text-sm font-black text-[#242E25]">Joyfully Accepts</span>
+                      <span className="text-xs text-[#5B6E60] font-bold">I will be there to celebrate!</span>
+                    </div>
+                  </label>
+
+                  <label
+                    className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                      attending === 'no'
+                        ? 'border-rose-500 bg-rose-50'
+                        : 'border-[#D5CEC2] bg-[#FCFBF7] hover:border-[#B5AEA2]'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="attending"
+                      value="no"
+                      checked={attending === 'no'}
+                      onChange={() => {
+                        setAttending('no');
+                        setHasPlusOne(false);
+                        setSecondGuestName('');
+                      }}
+                      className="w-4 h-4 text-rose-600 focus:ring-rose-500"
+                    />
+                    <div>
+                      <span className="block text-sm font-black text-[#242E25]">Regretfully Declines</span>
+                      <span className="text-xs text-[#5B6E60] font-bold">Will be there in spirit.</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              {/* Step 3: Additional Details (If Attending) */}
+              {attending === 'yes' && (
+                <div className="space-y-4">
+                  <div className="border-b-2 border-[#EAE5DC] pb-3">
+                    <span className="text-xs uppercase tracking-[0.2em] text-[#4E8765] font-black">
+                      Step 3
+                    </span>
+                    <h3 className="font-serif text-2xl font-black text-[#242E25]">Party & Plus One</h3>
+                  </div>
+
+                  <div className="space-y-4">
+                    <label className="flex items-center gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={hasPlusOne}
+                        onChange={(e) => setHasPlusOne(e.target.checked)}
+                        className="w-5 h-5 text-[#4E8765] rounded border-[#D5CEC2] focus:ring-[#4E8765]"
+                      />
+                      <span className="text-sm font-black text-[#242E25]">
+                        I am bringing a second guest (+1)
+                      </span>
+                    </label>
+
+                    {hasPlusOne && (
+                      <div>
+                        <label className="block text-xs font-black uppercase tracking-wider text-[#354337] mb-1.5">
+                          Second Guest Full Name <span className="text-rose-600 font-black">*</span>
+                        </label>
+                        <div className="relative">
+                          <UserCheck className="w-4 h-4 text-[#4E8765] absolute left-3.5 top-1/2 -translate-y-1/2 stroke-[2.5]" />
+                          <input
+                            type="text"
+                            required={hasPlusOne}
+                            value={secondGuestName}
+                            onChange={(e) => setSecondGuestName(e.target.value)}
+                            placeholder="John Doe"
+                            className="w-full pl-10 pr-4 py-3 bg-[#FCFBF7] border-2 border-[#D5CEC2] rounded-xl text-sm font-black text-[#242E25] focus:outline-none focus:ring-2 focus:ring-[#4E8765]"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Step 4: Note to Couple */}
+              <div className="space-y-4">
+                <div className="border-b-2 border-[#EAE5DC] pb-3">
+                  <span className="text-xs uppercase tracking-[0.2em] text-[#4E8765] font-black">
+                    {attending === 'yes' ? 'Step 4' : 'Step 3'}
+                  </span>
+                  <h3 className="font-serif text-2xl font-black text-[#242E25]">Message for Carol & Tim</h3>
+                </div>
+
+                <div>
+                  <textarea
+                    rows={3}
+                    value={noteToCouple}
+                    onChange={(e) => setNoteToCouple(e.target.value)}
+                    placeholder="Leave a warm message, well wishes, or song request..."
+                    className="w-full px-4 py-3 bg-[#FCFBF7] border-2 border-[#D5CEC2] rounded-xl text-sm font-bold text-[#242E25] focus:outline-none focus:ring-2 focus:ring-[#4E8765]"
+                  />
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="w-full py-4 bg-[#242E25] hover:bg-[#344235] text-white rounded-xl font-black uppercase tracking-wider text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-md"
+              >
+                <span>{isEditingExisting ? 'Update RSVP' : 'Submit RSVP'}</span>
+                <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+              </button>
+            </form>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
